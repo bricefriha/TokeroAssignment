@@ -1,3 +1,4 @@
+using CoinMarketCap;
 using TokeroAssignment.Components;
 using TokeroAssignment.Core;
 using TokeroAssignment.ViewModels;
@@ -12,6 +13,11 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+builder.Services.AddScoped<HomeViewModel>();
+
+builder.Services.AddScoped(sp =>
+    new CoinMarketCapClient(AppConstant.CmcApiKey)
+);
 builder.Services.AddScoped<HomeViewModel>();
 
 var app = builder.Build();

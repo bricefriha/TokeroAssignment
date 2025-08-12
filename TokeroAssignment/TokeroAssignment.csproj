@@ -14,4 +14,9 @@
     <EmbeddedResource Include="Config\AppSettings_temp.json" />
     <EmbeddedResource Include="Config\AppSettings.json" />
   </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CoinMarketCap-API" Version="2.0.0" />
+  </ItemGroup>
+
 </Project>

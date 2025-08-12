@@ -1,5 +1,9 @@
-﻿@using TokeroAssignment.ViewModels
+﻿@using CoinMarketCap
+@using CoinMarketCap.Models.Cryptocurrency
+@using TokeroAssignment.Models
+@using TokeroAssignment.ViewModels
 @inject HomeViewModel vm
+@inject CoinMarketCapClient client
 @page "/"
 
 <PageTitle>Home</PageTitle>
@@ -15,7 +19,7 @@
             </tr>
         </thead>
         <tbody>
-        @foreach (var token in vm.Tokens)
+            @foreach (var token in _tokens)
         {
             <tr>
                 <td>@token.Name (@token.Symbol)</td>
@@ -25,5 +29,21 @@
         }
         </tbody>
     </table>
-
 </tbody>
+
+@code {
+    private List<Token> _tokens = [];
+    protected override async Task OnInitializedAsync()
+    {
+        //await vm.LoadTokens();
+        _tokens = new List<Token>((await client.GetLatestListingsAsync(new ListingLatestParameters(), CancellationToken.None)).Data.Select(l => new Token
+        {
+            Name = l.Name,
+            Symbol = l.Symbol,
+            Changes = l.Quote["USD"].PercentChange24H,
+            PriceUsd = l.Quote["USD"].Price,
+
+
+        }).Take(10));
+    }
+}
