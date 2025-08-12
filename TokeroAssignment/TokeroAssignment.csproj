@@ -6,4 +6,12 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Content Remove="Config\AppSettings_temp.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Config\AppSettings_temp.json" />
+    <EmbeddedResource Include="Config\AppSettings.json" />
+  </ItemGroup>
 </Project>

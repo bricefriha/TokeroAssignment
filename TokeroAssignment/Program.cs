@@ -1,5 +1,11 @@
 using TokeroAssignment.Components;
+using TokeroAssignment.Core;
 using TokeroAssignment.ViewModels;
+
+#if DEBUG
+// In Debugging environment we'll have to import the environment variable from /Config/config.json
+EnvironementSetup.DebugSetup();
+#endif
 
 var builder = WebApplication.CreateBuilder(args);
 
