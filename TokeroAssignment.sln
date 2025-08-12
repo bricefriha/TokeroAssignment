@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36301.6 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TokeroAssignment", "TokeroAssignment\TokeroAssignment.csproj", "{BFB2E313-ED41-4F5A-B23D-5006DF933247}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BFB2E313-ED41-4F5A-B23D-5006DF933247}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BFB2E313-ED41-4F5A-B23D-5006DF933247}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BFB2E313-ED41-4F5A-B23D-5006DF933247}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BFB2E313-ED41-4F5A-B23D-5006DF933247}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {27D23F19-35E0-4844-8D63-FA272B074156}
+	EndGlobalSection
+EndGlobal
