@@ -1,3 +1,4 @@
+using CoinMarketCap;
 using Microsoft.EntityFrameworkCore;
 using WebAPI.Core.Data;
 
@@ -16,7 +17,6 @@ builder.Services.AddScoped(sp =>
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
