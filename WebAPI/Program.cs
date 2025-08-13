@@ -10,7 +10,9 @@ builder.Services.AddDbContext<DataContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
-
+builder.Services.AddScoped(sp =>
+    new CoinMarketCapClient(builder.Configuration["cmc_api_key"])
+);
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
