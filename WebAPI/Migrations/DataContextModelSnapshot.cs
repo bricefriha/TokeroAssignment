@@ -32,9 +32,6 @@ namespace WebAPI.Migrations
                     b.Property<double?>("AmountToken")
                         .HasColumnType("float");
 
-                    b.Property<double?>("AmountUSD")
-                        .HasColumnType("float");
-
                     b.Property<Guid>("Tokenid")
                         .HasColumnType("uniqueidentifier");
 
@@ -111,18 +108,12 @@ namespace WebAPI.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("id");
 
-                    b.Property<double?>("Changes")
-                        .HasColumnType("float");
-
                     b.Property<int>("CmcId")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<double?>("PriceUsd")
-                        .HasColumnType("float");
 
                     b.Property<string>("Symbol")
                         .IsRequired()
@@ -171,11 +162,9 @@ namespace WebAPI.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("id");
 
-                    b.Property<double?>("Changes")
-                        .HasColumnType("float");
-
-                    b.Property<double?>("PriceUsd")
-                        .HasColumnType("float");
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("id");
 
