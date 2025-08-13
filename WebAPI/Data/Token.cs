@@ -1,9 +1,18 @@
-﻿namespace WebAPI.Data;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace WebAPI.Data;
 
 public class Token
 {
-    public required string Name { get; set; }
+    [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    [Column("id")]
+    public Guid id { get; set; }
+    /// <summary>
+    /// Id on CoinMarketCap ; used to interact with the CoinMarketCap API
+    /// </summary>
     public int CmcId { get; set; }
+    public required string Name { get; set; }
     public required string Symbol { get; set; }
     public double? Changes { get; set; }
     public double? PriceUsd { get; set; }

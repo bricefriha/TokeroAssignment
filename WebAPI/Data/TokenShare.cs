@@ -1,7 +1,13 @@
-﻿namespace WebAPI.Data;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace WebAPI.Data;
 
 public class TokenShare
 {
+    [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    [Column("id")]
+    public Guid id { get; set; }
     /// <summary>
     /// Date of the first setup, each iteration will be based monthly from this date
     /// </summary>
