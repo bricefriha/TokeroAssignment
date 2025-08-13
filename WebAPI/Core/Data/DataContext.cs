@@ -14,6 +14,7 @@ public class DataContext : DbContext
 
     public DbSet<Order> Orders { get; set; }
     public DbSet<DcaSetup> Setups { get; set; }
+    public DbSet<UserData> Data { get; set; }
 
     
 }

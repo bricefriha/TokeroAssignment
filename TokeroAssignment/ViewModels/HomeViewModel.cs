@@ -1,4 +1,6 @@
-﻿using System.Collections.ObjectModel;
+﻿using CoinMarketCap;
+using CoinMarketCap.Models.Cryptocurrency;
+using System.Collections.ObjectModel;
 using TokeroAssignment.Models;
 
 namespace TokeroAssignment.ViewModels;
@@ -6,6 +8,8 @@ namespace TokeroAssignment.ViewModels;
 public class HomeViewModel : BaseViewModel
 {
     private ObservableCollection<Token> _tokens;
+    private CoinMarketCapClient _client;
+
     public ObservableCollection<Token> Tokens
     {
         get 
@@ -18,20 +22,22 @@ public class HomeViewModel : BaseViewModel
             OnPropertyChanged(nameof(Tokens));
         }
     }
-    public HomeViewModel()
+    public HomeViewModel(CoinMarketCapClient client)
     {
-        _tokens = new ObservableCollection<Token>()
+        _client = client;
+        _tokens = new ObservableCollection<Token>();
+    }
+
+    public async Task LoadTokens ()
+    {
+        Tokens = new ObservableCollection<Token>((await _client.GetLatestListingsAsync(new ListingLatestParameters(), CancellationToken.None))?.Data.Select(l => new Token
         {
-            new ()
-            {
-                Name = "Cardano",
-                Symbol= "ADA",
-            },
-            new ()
-            {
-                Name = "Cardano",
-                Symbol= "ADA",
-            }
-        };
+            Name = l.Name,
+            Symbol = l.Symbol,
+            Changes = l.Quote["USD"].PercentChange24H,
+            PriceUsd = l.Quote["USD"].Price,
+
+
+        }).Take(10));
     }
 }
