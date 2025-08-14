@@ -1,6 +1,6 @@
-## Setup
+# Setup
 
-### Get the Web API up and running
+## Get the Web API up and running
 
 #### import the secrets
 1. Rename `\WebAPI\config\secrets_temp.json` to `\WebAPI\config\secrets.json`
