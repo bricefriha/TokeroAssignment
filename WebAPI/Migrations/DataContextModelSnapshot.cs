@@ -63,12 +63,12 @@ namespace WebAPI.Migrations
                     b.Property<double?>("PriceUsd")
                         .HasColumnType("float");
 
-                    b.Property<Guid?>("UserDataid")
+                    b.Property<Guid>("UserDataId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("id");
 
-                    b.HasIndex("UserDataid");
+                    b.HasIndex("UserDataId");
 
                     b.ToTable("Setups");
                 });
@@ -121,7 +121,7 @@ namespace WebAPI.Migrations
 
                     b.HasKey("id");
 
-                    b.ToTable("Token");
+                    b.ToTable("Tokens");
                 });
 
             modelBuilder.Entity("WebAPI.Data.TokenShare", b =>
@@ -143,16 +143,16 @@ namespace WebAPI.Migrations
                     b.Property<double?>("Pourcentage")
                         .HasColumnType("float");
 
-                    b.Property<Guid>("Tokenid")
+                    b.Property<Guid>("TokenId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("id");
 
                     b.HasIndex("DcaSetupid");
 
-                    b.HasIndex("Tokenid");
+                    b.HasIndex("TokenId");
 
-                    b.ToTable("TokenShare");
+                    b.ToTable("TokenShares");
                 });
 
             modelBuilder.Entity("WebAPI.Data.UserData", b =>
@@ -192,9 +192,13 @@ namespace WebAPI.Migrations
 
             modelBuilder.Entity("WebAPI.Data.DcaSetup", b =>
                 {
-                    b.HasOne("WebAPI.Data.UserData", null)
+                    b.HasOne("WebAPI.Data.UserData", "UserData")
                         .WithMany("Shares")
-                        .HasForeignKey("UserDataid");
+                        .HasForeignKey("UserDataId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("UserData");
                 });
 
             modelBuilder.Entity("WebAPI.Data.Order", b =>
@@ -220,7 +224,7 @@ namespace WebAPI.Migrations
 
                     b.HasOne("WebAPI.Data.Token", "Token")
                         .WithMany()
-                        .HasForeignKey("Tokenid")
+                        .HasForeignKey("TokenId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

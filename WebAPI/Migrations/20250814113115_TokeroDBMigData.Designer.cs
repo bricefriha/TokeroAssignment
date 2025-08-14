@@ -12,8 +12,8 @@ using WebAPI.Core.Data;
 namespace WebAPI.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20250813105938_init")]
-    partial class init
+    [Migration("20250814113115_TokeroDBMigData")]
+    partial class TokeroDBMigData
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,31 @@ namespace WebAPI.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("WebAPI.Data.Balance", b =>
+                {
+                    b.Property<Guid>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("id");
+
+                    b.Property<double?>("AmountToken")
+                        .HasColumnType("float");
+
+                    b.Property<Guid>("TokenId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("UserDataId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("id");
+
+                    b.HasIndex("TokenId");
+
+                    b.HasIndex("UserDataId");
+
+                    b.ToTable("Balances");
+                });
 
             modelBuilder.Entity("WebAPI.Data.DcaSetup", b =>
                 {
@@ -41,7 +66,12 @@ namespace WebAPI.Migrations
                     b.Property<double?>("PriceUsd")
                         .HasColumnType("float");
 
+                    b.Property<Guid>("UserDataId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("id");
+
+                    b.HasIndex("UserDataId");
 
                     b.ToTable("Setups");
                 });
@@ -62,9 +92,14 @@ namespace WebAPI.Migrations
                     b.Property<Guid>("Tokenid")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("UserDataid")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("id");
 
                     b.HasIndex("Tokenid");
+
+                    b.HasIndex("UserDataid");
 
                     b.ToTable("Orders");
                 });
@@ -76,9 +111,6 @@ namespace WebAPI.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("id");
 
-                    b.Property<double?>("Changes")
-                        .HasColumnType("float");
-
                     b.Property<int>("CmcId")
                         .HasColumnType("int");
 
@@ -86,16 +118,13 @@ namespace WebAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<double?>("PriceUsd")
-                        .HasColumnType("float");
-
                     b.Property<string>("Symbol")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("id");
 
-                    b.ToTable("Token");
+                    b.ToTable("Tokens");
                 });
 
             modelBuilder.Entity("WebAPI.Data.TokenShare", b =>
@@ -117,16 +146,62 @@ namespace WebAPI.Migrations
                     b.Property<double?>("Pourcentage")
                         .HasColumnType("float");
 
-                    b.Property<Guid>("Tokenid")
+                    b.Property<Guid>("TokenId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("id");
 
                     b.HasIndex("DcaSetupid");
 
-                    b.HasIndex("Tokenid");
+                    b.HasIndex("TokenId");
 
-                    b.ToTable("TokenShare");
+                    b.ToTable("TokenShares");
+                });
+
+            modelBuilder.Entity("WebAPI.Data.UserData", b =>
+                {
+                    b.Property<Guid>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("id");
+
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("id");
+
+                    b.ToTable("Data");
+                });
+
+            modelBuilder.Entity("WebAPI.Data.Balance", b =>
+                {
+                    b.HasOne("WebAPI.Data.Token", "Token")
+                        .WithMany()
+                        .HasForeignKey("TokenId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WebAPI.Data.UserData", "UserData")
+                        .WithMany("Balances")
+                        .HasForeignKey("UserDataId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Token");
+
+                    b.Navigation("UserData");
+                });
+
+            modelBuilder.Entity("WebAPI.Data.DcaSetup", b =>
+                {
+                    b.HasOne("WebAPI.Data.UserData", "UserData")
+                        .WithMany("Shares")
+                        .HasForeignKey("UserDataId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("UserData");
                 });
 
             modelBuilder.Entity("WebAPI.Data.Order", b =>
@@ -136,6 +211,10 @@ namespace WebAPI.Migrations
                         .HasForeignKey("Tokenid")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("WebAPI.Data.UserData", null)
+                        .WithMany("Orders")
+                        .HasForeignKey("UserDataid");
 
                     b.Navigation("Token");
                 });
@@ -148,7 +227,7 @@ namespace WebAPI.Migrations
 
                     b.HasOne("WebAPI.Data.Token", "Token")
                         .WithMany()
-                        .HasForeignKey("Tokenid")
+                        .HasForeignKey("TokenId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -157,6 +236,15 @@ namespace WebAPI.Migrations
 
             modelBuilder.Entity("WebAPI.Data.DcaSetup", b =>
                 {
+                    b.Navigation("Shares");
+                });
+
+            modelBuilder.Entity("WebAPI.Data.UserData", b =>
+                {
+                    b.Navigation("Balances");
+
+                    b.Navigation("Orders");
+
                     b.Navigation("Shares");
                 });
 #pragma warning restore 612, 618
