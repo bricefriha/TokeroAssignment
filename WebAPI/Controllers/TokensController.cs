@@ -1,6 +1,9 @@
 ﻿using CoinMarketCap;
 using CoinMarketCap.Models.Cryptocurrency;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using WebAPI.Core.Data;
+using WebAPI.Data;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -12,9 +15,12 @@ namespace WebAPI.Controllers;
     {
 
         private CoinMarketCapClient _client;
-        public TokensController(CoinMarketCapClient client)
+        private readonly DataContext _context;
+        public TokensController(CoinMarketCapClient client,
+                                    DataContext context)
         {
             _client = client;
+                _context = context;
 
         }
         // GET: api/<TokensController>
@@ -57,22 +63,12 @@ namespace WebAPI.Controllers;
 
         };
     }
-
-    // POST api/<TokensController>
-    [HttpPost]
-    public void Post([FromBody] string value)
+    // GET api/<TokensController>/cmcID
+    [HttpGet("balance/{cmcId}")]
+    public async Task<ActionResult<Balance?>> GetBalanceByCmcId(int cmcId)
     {
-    }
+        return Ok(_context.Balances.Include(o => o.Token)
+                                .FirstOrDefault(bl => bl.Token.CmcId == cmcId));
 
-    // PUT api/<TokensController>/5
-    [HttpPut("{id}")]
-    public void Put(int id, [FromBody] string value)
-    {
-    }
-
-    // DELETE api/<TokensController>/5
-    [HttpDelete("{id}")]
-    public void Delete(int id)
-    {
     }
 }
