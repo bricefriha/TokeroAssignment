@@ -19,11 +19,20 @@ namespace WebAPI.Controllers
             _context = context;
         }
 
-        // GET api/<OrderController>/5
-        [HttpGet("{userId}")]
-        public async Task<ActionResult<List<Order>>> Get(Guid userId)
+        // GET api/<OrderController>/guid
+        [HttpGet("user/{userId}")]
+        public async Task<ActionResult<List<Order>>> GetByUser(Guid userId)
         {
             return StatusCode(200, await _context.Orders.Where(order => order.UserDataId == userId)
+                            .Include(o => o.Token)
+                            .ToListAsync());
+        }
+
+        // GET api/<OrderController>/guid
+        [HttpGet("token/{tokenId}")]
+        public async Task<ActionResult<List<Order>>> GetByToken(Guid tokenId)
+        {
+            return StatusCode(200, await _context.Orders.Where(order => order.Token.id == tokenId)
                             .Include(o => o.Token)
                             .ToListAsync());
         }
