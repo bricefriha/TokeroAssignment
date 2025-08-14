@@ -14,6 +14,10 @@ public class Token
     public int CmcId { get; set; }
     public required string Name { get; set; }
     public required string Symbol { get; set; }
+
+    [NotMapped]
     public double? Changes { get; set; }
+
+    [NotMapped]
     public double? PriceUsd { get; set; }
 }
