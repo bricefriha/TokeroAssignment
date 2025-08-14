@@ -14,7 +14,7 @@ public class Balance
     public double? AmountToken { get; set; }
     public Guid UserDataId { get; set; }
     [ForeignKey(nameof(UserDataId))]
-    public required UserData UserData { get; set; }
+    public UserData UserData { get; set; }
     public Guid TokenId { get; set; }
     [ForeignKey(nameof(TokenId))]
     public required Token Token { get; set; }

@@ -16,4 +16,5 @@ public class DataContext : DbContext
     public DbSet<UserData> Data { get; set; }
     public DbSet<Balance> Balances { get; set; }
     public DbSet<TokenShare> TokenShares { get; set; }
+    public DbSet<Token> Tokens { get; set; }
 }
