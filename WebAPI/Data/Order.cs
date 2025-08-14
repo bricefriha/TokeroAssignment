@@ -11,4 +11,7 @@ public class Order
     public required Token Token { get; set; }
     public double? Price { get; set; }
     public DateTime Date { get; set; }
+    public Guid UserDataId { get; set; }
+    [ForeignKey(nameof(UserDataId))]
+    public UserData? UserData { get; set; } = null;
 }

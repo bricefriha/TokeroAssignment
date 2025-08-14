@@ -11,7 +11,7 @@ public class Balance
 
     [NotMapped]
     public double? AmountUSD { get; set; }
-    public double? AmountToken { get; set; }
+    public double AmountToken { get; set; } = 0;
     public Guid UserDataId { get; set; }
     [ForeignKey(nameof(UserDataId))]
     public UserData UserData { get; set; }

@@ -12,7 +12,7 @@ using WebAPI.Core.Data;
 namespace WebAPI.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20250814113115_TokeroDBMigData")]
+    [Migration("20250814142656_TokeroDBMigData")]
     partial class TokeroDBMigData
     {
         /// <inheritdoc />
@@ -32,7 +32,7 @@ namespace WebAPI.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("id");
 
-                    b.Property<double?>("AmountToken")
+                    b.Property<double>("AmountToken")
                         .HasColumnType("float");
 
                     b.Property<Guid>("TokenId")
@@ -92,14 +92,14 @@ namespace WebAPI.Migrations
                     b.Property<Guid>("Tokenid")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("UserDataid")
+                    b.Property<Guid>("UserDataId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("id");
 
                     b.HasIndex("Tokenid");
 
-                    b.HasIndex("UserDataid");
+                    b.HasIndex("UserDataId");
 
                     b.ToTable("Orders");
                 });
@@ -212,11 +212,15 @@ namespace WebAPI.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("WebAPI.Data.UserData", null)
+                    b.HasOne("WebAPI.Data.UserData", "UserData")
                         .WithMany("Orders")
-                        .HasForeignKey("UserDataid");
+                        .HasForeignKey("UserDataId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Token");
+
+                    b.Navigation("UserData");
                 });
 
             modelBuilder.Entity("WebAPI.Data.TokenShare", b =>

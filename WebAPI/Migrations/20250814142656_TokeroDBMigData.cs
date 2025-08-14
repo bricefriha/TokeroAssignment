@@ -12,22 +12,22 @@ namespace WebAPI.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_Setups_Data_UserDataid",
-                table: "Setups");
+                name: "FK_Orders_Data_UserDataid",
+                table: "Orders");
 
             migrationBuilder.RenameColumn(
                 name: "UserDataid",
-                table: "Setups",
+                table: "Orders",
                 newName: "UserDataId");
 
             migrationBuilder.RenameIndex(
-                name: "IX_Setups_UserDataid",
-                table: "Setups",
-                newName: "IX_Setups_UserDataId");
+                name: "IX_Orders_UserDataid",
+                table: "Orders",
+                newName: "IX_Orders_UserDataId");
 
             migrationBuilder.AlterColumn<Guid>(
                 name: "UserDataId",
-                table: "Setups",
+                table: "Orders",
                 type: "uniqueidentifier",
                 nullable: false,
                 defaultValue: new Guid("00000000-0000-0000-0000-000000000000"),
@@ -35,9 +35,19 @@ namespace WebAPI.Migrations
                 oldType: "uniqueidentifier",
                 oldNullable: true);
 
+            migrationBuilder.AlterColumn<double>(
+                name: "AmountToken",
+                table: "Balances",
+                type: "float",
+                nullable: false,
+                defaultValue: 0.0,
+                oldClrType: typeof(double),
+                oldType: "float",
+                oldNullable: true);
+
             migrationBuilder.AddForeignKey(
-                name: "FK_Setups_Data_UserDataId",
-                table: "Setups",
+                name: "FK_Orders_Data_UserDataId",
+                table: "Orders",
                 column: "UserDataId",
                 principalTable: "Data",
                 principalColumn: "id",
@@ -48,30 +58,38 @@ namespace WebAPI.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_Setups_Data_UserDataId",
-                table: "Setups");
+                name: "FK_Orders_Data_UserDataId",
+                table: "Orders");
 
             migrationBuilder.RenameColumn(
                 name: "UserDataId",
-                table: "Setups",
+                table: "Orders",
                 newName: "UserDataid");
 
             migrationBuilder.RenameIndex(
-                name: "IX_Setups_UserDataId",
-                table: "Setups",
-                newName: "IX_Setups_UserDataid");
+                name: "IX_Orders_UserDataId",
+                table: "Orders",
+                newName: "IX_Orders_UserDataid");
 
             migrationBuilder.AlterColumn<Guid>(
                 name: "UserDataid",
-                table: "Setups",
+                table: "Orders",
                 type: "uniqueidentifier",
                 nullable: true,
                 oldClrType: typeof(Guid),
                 oldType: "uniqueidentifier");
 
+            migrationBuilder.AlterColumn<double>(
+                name: "AmountToken",
+                table: "Balances",
+                type: "float",
+                nullable: true,
+                oldClrType: typeof(double),
+                oldType: "float");
+
             migrationBuilder.AddForeignKey(
-                name: "FK_Setups_Data_UserDataid",
-                table: "Setups",
+                name: "FK_Orders_Data_UserDataid",
+                table: "Orders",
                 column: "UserDataid",
                 principalTable: "Data",
                 principalColumn: "id");
