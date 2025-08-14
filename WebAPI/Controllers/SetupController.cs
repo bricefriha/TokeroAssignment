@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
-using System.Threading.Tasks;
 using WebAPI.Core.Data;
 using WebAPI.Data;
 
@@ -43,9 +41,18 @@ public class SetupController : ControllerBase
         // We need to first add all the token shares to the DB
         foreach (TokenShare share in setup.Shares)
         {
-            // We add the token in DB first (if not there)
-            if (!(await _context.Tokens.AnyAsync(t => t.Symbol == share.Token.Symbol)))
+
+            var existingToken = await _context.Tokens
+                                            .FirstOrDefaultAsync(t => t.CmcId == share.Token.CmcId);
+
+            if (existingToken is null)
             {
+                _context.Tokens.Add(share.Token);
+                await _context.SaveChangesAsync();
+            }
+            else
+                share.Token = existingToken;
+
                 // Then we need to initiate a new balance for each token that don't have one (upon the user)
                 if (!(await _context.Balances.AnyAsync(b => b.Token.Symbol == share.Token.Symbol)))
                 {
@@ -58,10 +65,6 @@ public class SetupController : ControllerBase
 
                     await _context.SaveChangesAsync();
                 }
-
-                _context.Tokens.Add(share.Token);
-                await _context.SaveChangesAsync();
-            }
 
             // Now we can add the shares
             _context.TokenShares.Add(share);
