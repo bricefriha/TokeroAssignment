@@ -12,9 +12,13 @@ public class Fetcher
         _cService = new Service("localhost", port: 5259, sslCertificate: false); 
     }
 
-    public Task<List<Token>> GetTokenFromCmc()
+    /// <summary>
+    /// Get Tokens from coin market caps 
+    /// </summary>
+
+    public async Task<List<Token>> GetTokenFromCmc()
     {
-        return _cService.Get<List<Token>>(controller: "api",
+        return await _cService.Get<List<Token>>(controller: "api",
                              action: "tokens");
     }
 
