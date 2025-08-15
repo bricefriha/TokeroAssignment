@@ -1,6 +1,7 @@
 using CoinMarketCap;
 using TokeroAssignment.Components;
 using TokeroAssignment.Core;
+using TokeroAssignment.Services;
 using TokeroAssignment.ViewModels;
 
 #if DEBUG
@@ -19,6 +20,7 @@ builder.Services.AddScoped(sp =>
     new CoinMarketCapClient(AppConstant.CmcApiKey)
 );
 builder.Services.AddScoped<HomeViewModel>();
+builder.Services.AddSingleton<Fetcher>();
 
 var app = builder.Build();
 

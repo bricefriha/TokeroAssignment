@@ -1,9 +1,11 @@
 ﻿@using CoinMarketCap
 @using CoinMarketCap.Models.Cryptocurrency
 @using TokeroAssignment.Models
+@using TokeroAssignment.Services
 @using TokeroAssignment.ViewModels
 @inject HomeViewModel vm
 @inject CoinMarketCapClient client
+@inject Fetcher fetcher
 @page "/"
 
 <PageTitle>Home</PageTitle>
@@ -35,15 +37,6 @@
     private List<Token> _tokens = [];
     protected override async Task OnInitializedAsync()
     {
-        //await vm.LoadTokens();
-        _tokens = new List<Token>((await client.GetLatestListingsAsync(new ListingLatestParameters(), CancellationToken.None)).Data.Select(l => new Token
-        {
-            Name = l.Name,
-            Symbol = l.Symbol,
-            Changes = l.Quote["USD"].PercentChange24H,
-            PriceUsd = l.Quote["USD"].Price,
-
-
-        }).Take(10));
+        _tokens =  await fetcher.GetTokenFromCmc();
     }
 }
