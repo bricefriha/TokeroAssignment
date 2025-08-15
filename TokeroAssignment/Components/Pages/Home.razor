@@ -21,6 +21,7 @@
                 <th>Start Date</th>
                 <th>Token</th>
                 <th>Total Amount</th>
+                <th>Initial investment</th>
                 <th>Current value</th>
                 <th>% ROI</th>
             </tr>
@@ -32,6 +33,7 @@
                     <td>@investment.DateStart.ToString("dd/MM/yyyy")</td>
                     <td>@investment.Token.Name (@investment.Token.Symbol)</td>
                     <td>@investment.AmountToken</td>
+                    <td>$@Math.Round(investment.AmountUSD, 2)</td>
                     <td>$@Math.Round(investment.CurrentValue, 2)</td>
                     <td class="@(investment.PourcentageChange < 0 ? "text-danger" : "text-success")">@Math.Round(investment.PourcentageChange,2)%</td>
                 </tr>
