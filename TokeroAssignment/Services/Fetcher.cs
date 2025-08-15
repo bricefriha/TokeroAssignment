@@ -15,12 +15,18 @@ public class Fetcher
     /// <summary>
     /// Get Tokens from coin market caps 
     /// </summary>
-
     public async Task<List<Token>> GetTokenFromCmc()
     {
         return await _cService.Get<List<Token>>(controller: "api",
                              action: "tokens");
     }
 
-
+    /// <summary>
+    /// Get Tokens from coin market caps 
+    /// </summary>
+    public async Task<User> GetUserDataAsync()
+    {
+        return await _cService.Get<User>(controller: "api",
+                             action: "user");
+    }
 }
