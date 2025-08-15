@@ -37,22 +37,28 @@
         </tbody>
     </table>
     <br/>
-    <h1 class="mb-4">📈 Market </h1>
+    <h1 class="mb-4">📐 Your DCA setups </h1>
     <table class="table table-striped table-hover">
         <thead>
             <tr>
-                <th>Coin</th>
-                <th>Price (USD)</th>
-                <th>24h Change</th>
+                <th>Date creation</th>
+                <th>Tokens</th>
+                <th>Trigger day of the month</th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var token in _tokens)
+            @foreach (var setup in _dcaSetups)
             {
                 <tr>
-                    <td>@token.Name (@token.Symbol)</td>
-                    <td>@token.PriceUsd</td>
-                    <td>@token.Changes</td>
+                    <td>@setup.CreatedAt</td>
+                    <td>
+                        @foreach (var share in setup.Shares)
+                        {
+                            <span class="badge badge-secondary mx-1"
+                                  style="background-color: #e0e0e0; color: black;">• @share.Token.Name (@share.Token.Symbol) - @(share.FixAmountUSD is not null ? $"${share.FixAmountUSD}" : $"{share.Pourcentage}%")</span>
+                        }
+                    </td>
+                    <td>@GetOrdinal(setup.CreatedAt.Date.Day)</td>
                 </tr>
             }
         </tbody>
@@ -62,12 +68,37 @@
 @code {
     private List<Token> _tokens = [];
     private List<Investment> _dcaInvestments = [];
+    private List<DcaSetup> _dcaSetups = [];
     private User _userData;
 
     protected override async Task OnInitializedAsync()
     {
         _tokens =  await fetcher.GetTokenFromCmc();
         _userData =  await fetcher.GetUserDataAsync();
-        _dcaInvestments =  await fetcher.GetInvestments();
+        _dcaInvestments =  await fetcher.GetInvestmentsAsync();
+        _dcaSetups =  await fetcher.GetDcaSetupAsync();
+    }
+    private static string GetOrdinal(int number)
+    {
+        if (number <= 0) return number.ToString();
+
+        int rem100 = number % 100;
+        int rem10 = number % 10;
+
+        string suffix = rem100 switch
+        {
+            11 => "th",
+            12 => "th",
+            13 => "th",
+            _ => rem10 switch
+            {
+                1 => "st",
+                2 => "nd",
+                3 => "rd",
+                _ => "th"
+            }
+        };
+
+        return $"{number}{suffix}";
     }
 }

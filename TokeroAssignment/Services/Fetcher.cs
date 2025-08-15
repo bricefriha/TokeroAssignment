@@ -33,9 +33,18 @@ public class Fetcher
     /// <summary>
     /// Get dca investments
     /// </summary>
-    public async Task<List<Investment>> GetInvestments()
+    public async Task<List<Investment>> GetInvestmentsAsync()
     {
         return await _cService.Get<List<Investment>>(controller: "api",
                              action: "tokens/investments");
+    }
+
+    /// <summary>
+    /// Get dca setups
+    /// </summary>
+    public async Task<List<DcaSetup>> GetDcaSetupAsync()
+    {
+        return await _cService.Get<List<DcaSetup>>(controller: "api",
+                             action: "setup");
     }
 }
