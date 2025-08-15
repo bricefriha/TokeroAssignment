@@ -23,6 +23,7 @@ namespace WebAPI.Controllers;
                 _context = context;
 
         }
+
         // GET: api/<TokensController>
         [HttpGet]
         public async Task<IEnumerable<WebAPI.Data.Token>> Get()
@@ -39,8 +40,56 @@ namespace WebAPI.Controllers;
             })?.Take(10);
         }
 
+    // GET: api/<TokensController>
+    [HttpGet("investments")]
+    public async Task<ActionResult<IEnumerable<DcaInvestment>>> GetInvestments()
+    {
+        var orders = await _context.Orders
+                        .GroupBy(od => od.Token)
+                        .ToDictionaryAsync(g => g.Key, g => g.ToList());
+        var updatedTokenVals = (await _client.GetLatestListingsAsync(new ListingLatestParameters(), CancellationToken.None))?.Data.Select(l => new WebAPI.Data.Token
+        {
+            Name = l.Name,
+            CmcId = unchecked((int)l.Id),
+            Symbol = l.Symbol,
+            Changes = l.Quote["USD"].PercentChange24H,
+            PriceUsd = l.Quote["USD"].Price,
+        });
+
+        if (updatedTokenVals is null)
+            return StatusCode(500, "couldn't get the market data");
+
+        List<DcaInvestment> investments = [];
+        // go through each tokens
+        foreach (var tokenOrdered in orders)
+        {
+            Token? token = updatedTokenVals.SingleOrDefault(utv => utv.CmcId == tokenOrdered.Key.CmcId);
+
+            if (token is null)
+                continue;
+
+            double amountUSD = 0;
+            double amountToken = 0;
+            foreach (var order in tokenOrdered.Value)
+            {
+                amountUSD += order.Price;
+                amountToken += order.AmountToken;
+            }
+            double currValue = (token.PriceUsd ?? 0) * amountToken;
+            investments.Add(new()
+            {
+                Token = token,
+                AmountToken = amountToken,
+                AmountUSD = amountUSD,
+                CurrentValue = currValue,
+                PourcentageChange = ((currValue - amountUSD)/amountUSD)*100
+            });
+        }
+        return StatusCode(200, investments);
+    }
+
     // GET api/<TokensController>/5
-    [HttpGet("{symbol}")]
+    [HttpGet("/symbol/{symbol}")]
     public async Task<ActionResult<WebAPI.Data.Token?>> Get(string symbol)
     {
         if (string.IsNullOrEmpty(symbol))

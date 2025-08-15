@@ -9,8 +9,8 @@ public class Order
     [Column("id")]
     public Guid id { get; set; }
     public required Token Token { get; set; }
-    public double? Price { get; set; }
-    public double? AmountToken { get; set; }
+    public double Price { get; set; }
+    public double AmountToken { get; set; }
     public DateTime Date { get; set; }
     public Guid UserDataId { get; set; }
     [ForeignKey(nameof(UserDataId))]
