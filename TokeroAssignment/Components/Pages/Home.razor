@@ -1,16 +1,18 @@
 ﻿@using CoinMarketCap
 @using CoinMarketCap.Models.Cryptocurrency
+@using System.Collections.ObjectModel
 @using TokeroAssignment.Models
 @using TokeroAssignment.Services
 @using TokeroAssignment.ViewModels
 @inject HomeViewModel vm
 @inject CoinMarketCapClient client
 @inject Fetcher fetcher
+
 @page "/"
+@rendermode InteractiveServer
 
 <PageTitle>Home</PageTitle>
 
-<tbody>
     <h2 class="mb-4">Balance: @_userData?.Balances?.SingleOrDefault(b => b.Token.Symbol == "USDT").AmountToken USDT</h2>
     <h1 class="mb-4">📈 Current investments</h1>
     <table class="table table-striped table-hover">
@@ -62,21 +64,79 @@
                 </tr>
             }
         </tbody>
-    </table>
-</tbody>
+</table>
+<h1 class="mb-4">⚙️ Create New Setup </h1>
+
+    <EditForm Model="@newSetup" OnValidSubmit="@HandleValidSubmit">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <div class="form-row">
+            <div class="col form-group col-md-4">
+                <label>Start Date</label>
+                <InputDate @bind-Value="newSetup.CreatedAt" class="form-control" />
+        </div>
+        <br />
+            <div class="form-group">
+            <label>Shares</label>
+            <div class="border p-2 mb-2">
+                @foreach (var share in newSetup.Shares)
+                {
+                        <div class="form-group">
+                            <div class="row align-items-end">
+                                <div class="col-md-4">
+                        <label>Token</label>
+                        <InputSelect @bind-Value="share.Token.Symbol" class="form-control">
+                            @foreach (var token in _tokens)
+                            {
+                                <option value="@token.Symbol">@token.Name (@token.Symbol)</option>
+                            }
+                        </InputSelect>
+                        </div>
+                        <div class="col-md-4">
+                            <label>Amount</label>
+                            <InputNumber @bind-Value="share.Pourcentage" class="form-control" />
+                        </div>
+                        <div class="col-md-4">
+                            <InputSelect @bind-Value="share.IsFixedAmount" class="form-control" style="width: 50px;">
+                                <option value="false">%</option>
+                                <option value="true">usd</option>
+                            </InputSelect>
+                        </div>
+                            </div>
+                        </div>
+            }
+            <br />
+            <button type="button"
+                    class="btn btn-secondary"
+                    @onclick="AddShare">
+                + Add Share
+                </button>
+            </div>
+            </div>
+    </div>
+    <br />
+
+        <button type="submit" class="btn btn-primary">Create Setup</button>
+</EditForm>
 
 @code {
     private List<Token> _tokens = [];
     private List<Investment> _dcaInvestments = [];
-    private List<DcaSetup> _dcaSetups = [];
+    private ObservableCollection<DcaSetup> _dcaSetups = [];
     private User _userData;
+    private string setupShareInputAmountType;
+    private DcaSetup newSetup = new()
+    {
+        Shares = new ObservableCollection<TokenShare> { new TokenShare { Token = new Token() } }
+    };
 
     protected override async Task OnInitializedAsync()
     {
         _tokens =  await fetcher.GetTokenFromCmc();
         _userData =  await fetcher.GetUserDataAsync();
         _dcaInvestments =  await fetcher.GetInvestmentsAsync();
-        _dcaSetups =  await fetcher.GetDcaSetupAsync();
+        _dcaSetups =  new (await fetcher.GetDcaSetupAsync());
     }
     private static string GetOrdinal(int number)
     {
@@ -100,5 +160,14 @@
         };
 
         return $"{number}{suffix}";
+    }
+    private void HandleValidSubmit()
+    {
+        // Save logic here
+        Console.WriteLine("Setup created!");
+    }
+    public void AddShare()
+    {
+        newSetup.Shares.Add(new TokenShare { Token = new Token() });
     }
 }
