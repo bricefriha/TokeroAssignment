@@ -10,10 +10,10 @@ namespace WebAPI.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<double>(
-                name: "AmountToken",
-                table: "Orders",
-                type: "float",
+            migrationBuilder.AddColumn<int>(
+                name: "DayOfMonth",
+                table: "Setups",
+                type: "int",
                 nullable: true);
         }
 
@@ -21,8 +21,8 @@ namespace WebAPI.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "AmountToken",
-                table: "Orders");
+                name: "DayOfMonth",
+                table: "Setups");
         }
     }
 }

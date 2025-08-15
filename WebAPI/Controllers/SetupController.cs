@@ -69,6 +69,11 @@ public class SetupController : ControllerBase
             // Now we can add the shares
             _context.TokenShares.Add(share);
         }
+
+        // Set by default day of the month as the day of the creation of the setup
+        if (setup.DayOfMonth is null)
+            setup.DayOfMonth = setup.CreatedAt.Day;
+
         _context.Setups.Add(setup);
         await _context.SaveChangesAsync();
         return StatusCode(201, await GetDcaSetups());

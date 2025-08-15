@@ -54,14 +54,14 @@ namespace WebAPI.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("id");
 
-                    b.Property<double?>("Changes")
+                    b.Property<double?>("AllocationAmountUSD")
                         .HasColumnType("float");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<double?>("PriceUsd")
-                        .HasColumnType("float");
+                    b.Property<int?>("DayOfMonth")
+                        .HasColumnType("int");
 
                     b.Property<Guid>("UserDataId")
                         .HasColumnType("uniqueidentifier");
@@ -80,13 +80,13 @@ namespace WebAPI.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("id");
 
-                    b.Property<double?>("AmountToken")
+                    b.Property<double>("AmountToken")
                         .HasColumnType("float");
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
-                    b.Property<double?>("Price")
+                    b.Property<double>("Price")
                         .HasColumnType("float");
 
                     b.Property<Guid>("Tokenid")
