@@ -70,14 +70,18 @@ namespace WebAPI.Controllers;
 
             double amountUSD = 0;
             double amountToken = 0;
+            DateTime startDate = DateTime.MinValue;
             foreach (var order in tokenOrdered.Value)
             {
+                if (startDate == DateTime.MinValue)
+                    startDate = order.Date;
                 amountUSD += order.Price;
                 amountToken += order.AmountToken;
             }
             double currValue = (token.PriceUsd ?? 0) * amountToken;
             investments.Add(new()
             {
+                DateStart = startDate,
                 Token = token,
                 AmountToken = amountToken,
                 AmountUSD = amountUSD,
