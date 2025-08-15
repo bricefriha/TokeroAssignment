@@ -65,7 +65,7 @@
             }
         </tbody>
 </table>
-<h1 class="mb-4">⚙️ Create New Setup </h1>
+<h1 class="mb-4">⚙️ Create New DCA Setup </h1>
 
     <EditForm Model="@newSetup" OnValidSubmit="@HandleValidSubmit">
         <DataAnnotationsValidator />
@@ -86,7 +86,13 @@
                             <div class="row align-items-end">
                                 <div class="col-md-4">
                         <label>Token</label>
-                        <InputSelect @bind-Value="share.Token.Symbol" class="form-control">
+                        <InputSelect @bind-Value:get="share.Token.Symbol"
+                                     @bind-Value:set="(value) => 
+                                     { 
+                                         share.Token = _tokens!.SingleOrDefault(tk => tk.Symbol ==value?.ToString()); 
+                                     }"
+                                     
+                                     class="form-control">
                             @foreach (var token in _tokens)
                             {
                                 <option value="@token.Symbol">@token.Name (@token.Symbol)</option>
@@ -125,7 +131,6 @@
     private List<Investment> _dcaInvestments = [];
     private ObservableCollection<DcaSetup> _dcaSetups = [];
     private User _userData;
-    private string setupShareInputAmountType;
     private DcaSetup newSetup = new()
     {
         Shares = new ObservableCollection<TokenShare> { new TokenShare { Token = new Token() } }
@@ -137,6 +142,7 @@
         _userData =  await fetcher.GetUserDataAsync();
         _dcaInvestments =  await fetcher.GetInvestmentsAsync();
         _dcaSetups =  new (await fetcher.GetDcaSetupAsync());
+        ResetShareForm();
     }
     private static string GetOrdinal(int number)
     {
@@ -163,11 +169,34 @@
     }
     private void HandleValidSubmit()
     {
-        // Save logic here
+        foreach (TokenShare share in newSetup.Shares)
+        {
+            // TODO: this is a patch, Ideally we want to redesign the data structure to allow both Fixed and percent amount
+            if (share.IsFixedAmount)
+            {
+                share.FixAmountUSD = share.Pourcentage;
+                share.Pourcentage = null;
+            }
+        }
+        fetcher.InsertDcaSetupAsync(newSetup).GetAwaiter();
+
+        _dcaSetups.Add(newSetup);
+        ResetShareForm();
         Console.WriteLine("Setup created!");
     }
+
     public void AddShare()
     {
         newSetup.Shares.Add(new TokenShare { Token = new Token() });
     }
+
+    public void ResetShareForm()
+    {
+        newSetup = new()
+            {
+                UserDataId = _userData.Id,
+                Shares = new ObservableCollection<TokenShare> { new TokenShare { Token = _tokens.FirstOrDefault() } }
+            };
+    }
+    
 }

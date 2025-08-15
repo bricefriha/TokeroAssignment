@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace TokeroAssignment.Models;
 
@@ -12,5 +13,6 @@ public class TokenShare
     public double? FixAmountUSD { get; set; }
     public Guid TokenId { get; set; }
     public Token Token { get; set; }
+    [JsonIgnore]
     public bool IsFixedAmount { get; set; }
 }

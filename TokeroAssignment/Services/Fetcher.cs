@@ -47,4 +47,15 @@ public class Fetcher
         return await _cService.Get<List<DcaSetup>>(controller: "api",
                              action: "setup");
     }
+
+    /// <summary>
+    /// Create a setup
+    /// </summary>
+    public async Task<List<DcaSetup>> InsertDcaSetupAsync(DcaSetup setup)
+    {
+        return await _cService.Post<List<DcaSetup>>(controller: "api",
+                             action: "setup",
+                             payload: setup
+                             );
+    }
 }
