@@ -16,6 +16,31 @@
     <table class="table table-striped table-hover">
         <thead>
             <tr>
+                <th>Date Start</th>
+                <th>Token</th>
+                <th>Total Amount</th>
+                <th>Current value</th>
+                <th>% Profit / Loss</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var investment in _dcaInvestments)
+            {
+                <tr>
+                    <td>@investment.DateStart.ToString("dd/MM/yyyy")</td>
+                    <td>@investment.Token.Name (@investment.Token.Symbol)</td>
+                    <td>@investment.AmountToken</td>
+                    <td>$@Math.Round(investment.CurrentValue, 2)</td>
+                    <td class="@(investment.PourcentageChange < 0 ? "text-danger" : "text-success")">@Math.Round(investment.PourcentageChange,2)%</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <br/>
+    <h1 class="mb-4">📈 Market </h1>
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
                 <th>Coin</th>
                 <th>Price (USD)</th>
                 <th>24h Change</th>
@@ -23,24 +48,26 @@
         </thead>
         <tbody>
             @foreach (var token in _tokens)
-        {
-            <tr>
-                <td>@token.Name (@token.Symbol)</td>
+            {
+                <tr>
+                    <td>@token.Name (@token.Symbol)</td>
                     <td>@token.PriceUsd</td>
                     <td>@token.Changes</td>
-            </tr>
-        }
+                </tr>
+            }
         </tbody>
     </table>
 </tbody>
 
 @code {
     private List<Token> _tokens = [];
+    private List<Investment> _dcaInvestments = [];
     private User _userData;
 
     protected override async Task OnInitializedAsync()
     {
         _tokens =  await fetcher.GetTokenFromCmc();
         _userData =  await fetcher.GetUserDataAsync();
+        _dcaInvestments =  await fetcher.GetInvestments();
     }
 }

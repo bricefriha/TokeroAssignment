@@ -13,7 +13,7 @@ public class Fetcher
     }
 
     /// <summary>
-    /// Get Tokens from coin market caps 
+    /// Get Tokens from coin market cap
     /// </summary>
     public async Task<List<Token>> GetTokenFromCmc()
     {
@@ -22,11 +22,20 @@ public class Fetcher
     }
 
     /// <summary>
-    /// Get Tokens from coin market caps 
+    /// Get the user data
     /// </summary>
     public async Task<User> GetUserDataAsync()
     {
         return await _cService.Get<User>(controller: "api",
                              action: "user");
+    }
+
+    /// <summary>
+    /// Get dca investments
+    /// </summary>
+    public async Task<List<Investment>> GetInvestments()
+    {
+        return await _cService.Get<List<Investment>>(controller: "api",
+                             action: "tokens/investments");
     }
 }
