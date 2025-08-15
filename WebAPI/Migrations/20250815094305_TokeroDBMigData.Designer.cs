@@ -12,7 +12,7 @@ using WebAPI.Core.Data;
 namespace WebAPI.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20250814142656_TokeroDBMigData")]
+    [Migration("20250815094305_TokeroDBMigData")]
     partial class TokeroDBMigData
     {
         /// <inheritdoc />
@@ -82,6 +82,9 @@ namespace WebAPI.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("id");
+
+                    b.Property<double?>("AmountToken")
+                        .HasColumnType("float");
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
