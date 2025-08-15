@@ -11,6 +11,7 @@
 <PageTitle>Home</PageTitle>
 
 <tbody>
+    <h2 class="mb-4">Balance: @_userData?.Balances?.SingleOrDefault(b => b.Token.Symbol == "USDT").AmountToken USDT</h2>
     <h1 class="mb-4">📈 Current investment</h1>
     <table class="table table-striped table-hover">
         <thead>
@@ -35,8 +36,11 @@
 
 @code {
     private List<Token> _tokens = [];
+    private User _userData;
+
     protected override async Task OnInitializedAsync()
     {
         _tokens =  await fetcher.GetTokenFromCmc();
+        _userData =  await fetcher.GetUserDataAsync();
     }
 }
