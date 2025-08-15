@@ -46,6 +46,7 @@
                 <th>Date creation</th>
                 <th>Tokens</th>
                 <th>Trigger day of the month</th>
+                <th>Budget Allocation (USD)</th>
             </tr>
         </thead>
         <tbody>
@@ -60,7 +61,8 @@
                                   style="background-color: #e0e0e0; color: black;">• @share.Token.Name (@share.Token.Symbol) - @(share.FixAmountUSD is not null ? $"${share.FixAmountUSD}" : $"{share.Pourcentage}%")</span>
                         }
                     </td>
-                <td>@GetOrdinal(setup.DayOfMonth)</td>
+                    <td>@GetOrdinal(setup.DayOfMonth)</td>
+                <td>@(setup.AllocationAmountUSD is not null ? $"${setup.AllocationAmountUSD}" : "not set")</td>
                 </tr>
             }
         </tbody>
@@ -74,16 +76,19 @@
         <div class="form-row">
         <div class="form-row align-items-end">
             <div class="form-group col-md-6">
-                <label for="startDate">Start Date</label>
-                <InputDate id="startDate"
-                           @bind-Value="newSetup.CreatedAt"
+                <label >Start Date</label>
+                <InputDate @bind-Value="newSetup.CreatedAt"
                            class="form-control" />
             </div>
 
             <div class="form-group col-md-6">
-                <label for="triggerDay">Trigger day of the month</label>
-                <InputNumber id="triggerDay"
-                             @bind-Value="newSetup.DayOfMonth"
+                <label >Trigger day of the month</label>
+                <InputNumber @bind-Value="newSetup.DayOfMonth"
+                             class="form-control" />
+            </div>
+            <div class="form-group col-md-6">
+                <label >Budget allocation in USD (optional)</label>
+                <InputNumber @bind-Value="newSetup.AllocationAmountUSD"
                              class="form-control" />
             </div>
         </div>
