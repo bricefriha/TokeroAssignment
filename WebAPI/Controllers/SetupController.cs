@@ -37,6 +37,8 @@ public class SetupController : ControllerBase
     {
         if (setup is null)
             return StatusCode(401, "Invalid input");
+        if (setup.DayOfMonth > 30 || setup.DayOfMonth < 1)
+            return StatusCode(401, "Invalid `DayOfMonth` input");
 
         // We need to first add all the token shares to the DB
         foreach (TokenShare share in setup.Shares)
