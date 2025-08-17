@@ -1,3 +1,25 @@
+## Assignment 
+As an assignment, I was tasked to create a Crypto DCA (Dollar Cost Averagering) Calculator with simlulated data using Blazor interactive server:
+
+
+https://github.com/user-attachments/assets/bd069e75-eeb4-440a-8ebb-c2cf453b9dc2
+
+### My vision for the project
+Firstly, as a casual crypto investor myself, this is a solution I would actually be interested in.
+Therefore my approach to the problem was not only from a developer point of view, but also from a user one.
+
+My approach of the project was very much production oriented, with scalability in mind. 
+Thus I decided to create a Web API that would handles the data, which would allow the solution to extent to other platforms easily.
+
+The idea I had was that the user would create DCA setups, that would be checked everyday by the server and would only trigger orders if the day of the month that is set as trigger would match with the current date.
+The Web APP would serve more as a dashboard for the user to see all their DCA setups and track their current investments.
+
+#### Limitation
+Due to the timeframe for the assignment to be delivered, there was no room to set a system to check the DCA setups and run orders monthly.
+While this as been left out, I started working on it and saved my progress as a `git stash`.
+
+This was a pure pleasure to work on this project!
+
 # Setup the project
 
 ## Import the database via command line
