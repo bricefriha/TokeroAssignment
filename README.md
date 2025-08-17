@@ -1,4 +1,29 @@
-# Setup
+# Setup the project
+
+## Import the database via command line
+1. open the Terminal in the location the project is stored (`/TokeroAssignment`)
+2. To import the run either of the following command
+   
+   **using Windows Authentication**
+
+   `sqlcmd -S localhost -E -Q "RESTORE DATABASE DCA-db FROM DISK = '.\database\DCA-db.bak' WITH REPLACE"`
+
+   **using User login**
+
+   `sqlcmd -S localhost -U <Username> -P <Password> -Q "RESTORE DATABASE DCA-db FROM DISK = '.\database\DCA-db.bak' WITH REPLACE"`
+   
+## Import the database via SSMS
+1. Open **SSMS** and connect to your SQL Server instance.
+2. In **Object Explorer**, right-click on **Databases**.
+3. Select **Restore Database...**
+4. Under **Source**, choose:
+   - **Device**
+   - Click the **...** button and browse to
+   - Press the **Add** button
+   - select the `\database\DCA-db.bak` file from the project
+   - Press **OK**
+5. Once your back on the previous page, press **OK**.
+
 
 ## Get the Web API up and running
 
