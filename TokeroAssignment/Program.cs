@@ -20,7 +20,14 @@ builder.Services.AddScoped(sp =>
     new CoinMarketCapClient(AppConstant.CmcApiKey)
 );
 builder.Services.AddScoped<HomeViewModel>();
-builder.Services.AddSingleton<Fetcher>();
+builder.Services.AddSingleton<Fetcher>(options =>
+    new(new()
+    {
+        Host = builder.Configuration["ServerHost"] ?? "localhost",
+        Port = Convert.ToInt16(builder.Configuration["ServerPort"]),
+        SslCertificate = Convert.ToBoolean(builder.Configuration["ServerSSL"])
+    })
+ );
 
 var app = builder.Build();
 
