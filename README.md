@@ -14,7 +14,7 @@ Thus I decided to create a Web API that would handles the data, which would allo
 The idea I had was that the user would create DCA setups, that would be checked everyday by the server and would only trigger orders if the day of the month that is set as trigger would match with the current date.
 The Web APP would serve more as a dashboard for the user to see all their DCA setups and track their current investments.
 
-All market data are being fetched from the [CoinMarketCap API](https://coinmarketcap.com/api/), while not mandatory, I througth this would align with my williness to make a production driven scalable solution.
+All market data are being fetched from the [CoinMarketCap API](https://coinmarketcap.com/api/), while not mandatory, I thought this would align with my williness to make a production driven scalable solution.
 This didn't take much of my time to implement, as I already worked with similar APIs in the past (such as Binance and CoinGecko) when building my own Crypto trading bot.
 
 #### Limitation
