@@ -73,8 +73,10 @@ You have two ways of doing it.
 1. Open the terminal
 2. Run `dotnet run`
 3. Copy the http address returned by the console under `Now listening on: [the url should be here]`, and paste it to your browser:
+   
    <img width="344" height="33" alt="image" src="https://github.com/user-attachments/assets/26388474-92b1-438d-a2ea-79a3bcfb2798" />
-4. To terminate the app: go to the terminal and do CTRL+C
+   
+5. To terminate the app: go to the terminal and do CTRL+C
 
 
 
