@@ -7,9 +7,11 @@ public class Fetcher
 {
     private Service _cService;
 
-    public Fetcher()
+    public Fetcher(FetcherOptionBuilder options)
     {
-        _cService = new Service("localhost", port: 5259, sslCertificate: false); 
+        _cService = new Service(options.Host, 
+                                port: options.Port, 
+                                sslCertificate: options.SslCertificate); 
     }
 
     /// <summary>
